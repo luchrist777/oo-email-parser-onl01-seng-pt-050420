@@ -16,4 +16,3 @@ class EmailParser
   end
 
 end
-© 2020 GitHub, Inc.
