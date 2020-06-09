@@ -2,17 +2,23 @@
 # emails. The parse method on the class should separate them into
 # unique email addresses. The delimiters to support are commas (',')
 # or whitespace (' ').
-class EmailParser
+describe "EmailParser" do
+  describe '#parse' do
+    it "parses CSV emails" do
+      expect(EmailParser.new("avi@test.com, arel@test.com").parse).to eq(["avi@test.com", "arel@test.com"])
+    end
 
-  attr_accessor :email
-  def  initialize(emails)
-    @email = emails
+    it "parses space delimited emails" do
+      expect(EmailParser.new("avi@test.com arel@test.com").parse).to eq(["avi@test.com", "arel@test.com"])
+    end
+
+    it "parses both CSV and space delimited emails" do
+      emails = "avi@test.com, arel@test.com test@avi.com, test@arel.com"
+      expect(EmailParser.new(emails).parse).to eq(["avi@test.com", "arel@test.com","test@avi.com", "test@arel.com"]) 
+    end
+
+    it 'parses and removes duplicate emails' do
+      expect(EmailParser.new("avi@test.com, avi@test.com").parse).to eq(["avi@test.com"])
+    end
   end
-
-  def parse
-    email_array = @email.split(/[, ]/).uniq
-    email_array.reject! {|element| element.empty?}
-    email_array
-  end
-
 end
